@@ -55,7 +55,7 @@ export const CustomCursor = () => {
   return (
     <>
       <motion.div
-        className="fixed top-0 left-0 rounded-full pointer-events-none z-[100]"
+        className="fixed top-0 left-0 rounded-full pointer-events-none z-[9999]"
         variants={variants}
         animate={cursorVariant}
         style={{
@@ -65,7 +65,7 @@ export const CustomCursor = () => {
       />
       {/* Central dot that strictly follows without spring for absolute precision */}
       <motion.div
-        className="fixed top-0 left-0 w-2 h-2 bg-purple-500 rounded-full pointer-events-none z-[100]"
+        className="fixed top-0 left-0 w-2 h-2 bg-purple-500 rounded-full pointer-events-none z-[9999]"
         style={{
           x: mouseX,
           y: mouseY,

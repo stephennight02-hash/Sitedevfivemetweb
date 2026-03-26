@@ -84,7 +84,7 @@ export const TerminalContact = () => {
             color: 9133270, 
             fields: [
               { name: "👤 Nom", value: formData.name, inline: true },
-              { name: "📧 Email", value: formData.email, inline: true },
+              { name: "📧 Discord", value: formData.email, inline: true },
               { name: "💬 Message", value: formData.message }
             ],
             footer: { text: "Reçu depuis le terminal du portfolio" },

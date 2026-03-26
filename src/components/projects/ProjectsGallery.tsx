@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, X, CheckCircle2, Zap, Code2 } from "lucide-react";
+import { X, CheckCircle2, Zap, Code2, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const projects = [
@@ -8,7 +8,7 @@ const projects = [
     id: 1,
     title: "Tablette Pompier Rescue OS",
     description: "Système embarqué complet pour les services de secours. Interface NUI ultra-fluide simulant un OS de tablette avec gestion des interventions en temps réel.",
-    image: "/placeholder.svg",
+    images: ["/interfacetablette.png", "/interfacetablette2.png"],
     tags: ["Vue.js", "Tailwind", "LUA", "NUI"],
     gradient: "from-blue-600 to-cyan-400",
     resmon: "0.00ms",
@@ -23,7 +23,7 @@ const projects = [
     id: 2,
     title: "Système de Garage Avancé",
     description: "Gestion complète des véhicules avec interface moderne. Sauvegarde base de données optimisée, prévisualisation 3D et système de fourrière intégré.",
-    image: "/placeholder.svg",
+    images: ["/scriptgarage.png"],
     tags: ["LUA", "SQL", "UI/UX"],
     gradient: "from-purple-600 to-pink-500",
     resmon: "0.00ms",
@@ -38,7 +38,7 @@ const projects = [
     id: 3,
     title: "Script d'Incendies et Soins",
     description: "Script dynamique de propagation de feu synchronisé entre tous les joueurs. Inclut un système médical poussé avec gestion des blessures et des traitements.",
-    image: "/placeholder.svg",
+    images: ["/SmartFires3.avif", "/SmartFires6.avif"],
     tags: ["LUA", "Sync", "Optimisation"],
     gradient: "from-orange-500 to-red-500",
     resmon: "0.00ms",
@@ -50,6 +50,58 @@ const projects = [
     ]
   }
 ];
+
+const ImageCarousel = ({ images }: { images: string[] }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  if (!images || images.length === 0) return null;
+
+  const next = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+  const prev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  return (
+    <div className="relative w-full h-full flex items-center justify-center bg-gray-950 group">
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={currentIndex}
+          src={images[currentIndex]}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.3 }}
+          className="absolute inset-0 w-full h-full object-cover opacity-80"
+          alt={`Slide ${currentIndex}`}
+        />
+      </AnimatePresence>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+      
+      {images.length > 1 && (
+        <>
+          <button onClick={prev} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-black/50 border border-white/10 text-white hover:bg-white/20 transition-all opacity-0 group-hover:opacity-100 z-20">
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button onClick={next} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-black/50 border border-white/10 text-white hover:bg-white/20 transition-all opacity-0 group-hover:opacity-100 z-20">
+            <ChevronRight className="w-5 h-5" />
+          </button>
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={(e) => { e.stopPropagation(); setCurrentIndex(i); }}
+                className={`w-2 h-2 rounded-full transition-all ${i === currentIndex ? "bg-cyan-400 w-4" : "bg-white/30 hover:bg-white/50"}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 
 const ProjectCard = ({ project, onSelect }: { project: typeof projects[0]; onSelect: (p: typeof projects[0]) => void }) => {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -112,7 +164,13 @@ const ProjectCard = ({ project, onSelect }: { project: typeof projects[0]; onSel
         }}
       />
 
-      <div className={`absolute inset-0 opacity-40 bg-gradient-to-br transition-opacity duration-500 ${isHovered ? 'opacity-70' : 'opacity-40'} ${project.gradient}`} />
+      {project.images && project.images.length > 0 && (
+        <div 
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out" 
+          style={{ backgroundImage: `url(${project.images[0]})`, transform: isHovered ? 'scale(1.05)' : 'scale(1)' }} 
+        />
+      )}
+      <div className={`absolute inset-0 opacity-60 bg-gradient-to-br transition-opacity duration-500 ${isHovered ? 'opacity-80' : 'opacity-60'} ${project.gradient}`} />
       
       {/* 3D Content wrapper */}
       <div 
@@ -134,9 +192,6 @@ const ProjectCard = ({ project, onSelect }: { project: typeof projects[0]; onSel
           <div className="flex gap-3">
             <Button size="sm" onClick={() => onSelect(project)} className="bg-white/10 hover:bg-white/20 text-white border-none flex-1 transition-colors">
               Plus de détails
-            </Button>
-            <Button size="icon" variant="outline" className="bg-transparent border-white/20 hover:bg-white/10 shrink-0 transition-colors">
-              <Github className="w-4 h-4 text-white" />
             </Button>
           </div>
         </div>
@@ -173,13 +228,19 @@ const ProjectModal = ({ project, onClose }: { project: typeof projects[0]; onClo
 
         {/* Media */}
         <div className="w-full md:w-1/2 bg-gray-950 flex flex-col items-center justify-center min-h-[250px] md:min-h-full border-b md:border-b-0 md:border-r border-white/5 relative overflow-hidden group">
-          <div className={`absolute inset-0 opacity-20 bg-gradient-to-br transition-opacity duration-500 group-hover:opacity-40 ${project.gradient}`} />
-          <div className="relative z-10 text-center p-8">
-            <div className="w-16 h-16 mx-auto mb-4 border border-white/20 rounded-xl flex items-center justify-center bg-white/5 backdrop-blur-sm">
-              <Code2 className="w-8 h-8 text-white/50" />
-            </div>
-            <p className="text-gray-400 font-mono tracking-widest text-sm uppercase">Espace Vidéo / Démo In-Game</p>
-          </div>
+          {project.images && project.images.length > 0 ? (
+            <ImageCarousel images={project.images} />
+          ) : (
+            <>
+              <div className={`absolute inset-0 opacity-20 bg-gradient-to-br transition-opacity duration-500 group-hover:opacity-40 ${project.gradient}`} />
+              <div className="relative z-10 text-center p-8">
+                <div className="w-16 h-16 mx-auto mb-4 border border-white/20 rounded-xl flex items-center justify-center bg-white/5 backdrop-blur-sm">
+                  <Code2 className="w-8 h-8 text-white/50" />
+                </div>
+                <p className="text-gray-400 font-mono tracking-widest text-sm uppercase">Espace Vidéo / Démo In-Game</p>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Technical Info */}

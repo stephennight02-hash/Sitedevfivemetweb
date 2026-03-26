@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Github, MessageSquare, Code } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -35,18 +35,7 @@ export function Footer() {
           {/* Right: Socials */}
           <div className="flex-1 flex justify-center md:justify-end gap-5">
             <motion.a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-white transition-colors"
-              whileHover={{ scale: 1.1, filter: "drop-shadow(0px 0px 8px rgba(139,92,246,0.8))" }}
-              aria-label="GitHub"
-            >
-              <Github className="w-5 h-5" />
-            </motion.a>
-            
-            <motion.a
-              href="https://discord.com"
+              href="https://discord.com/users/max_fvt2000"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-500 hover:text-white transition-colors"
@@ -54,17 +43,6 @@ export function Footer() {
               aria-label="Discord"
             >
               <MessageSquare className="w-5 h-5" />
-            </motion.a>
-            
-            <motion.a
-              href="https://forum.cfx.re"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-white transition-colors"
-              whileHover={{ scale: 1.1, filter: "drop-shadow(0px 0px 8px rgba(245,158,11,0.8))" }}
-              aria-label="Cfx.re"
-            >
-              <Code className="w-5 h-5" />
             </motion.a>
           </div>
 
