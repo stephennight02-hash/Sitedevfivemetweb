@@ -129,7 +129,7 @@ export const TerminalContact = () => {
   };
 
   return (
-    <section className="py-24 bg-black relative overflow-hidden">
+    <section id="contact" className="py-24 bg-black relative overflow-hidden">
       {/* Subtle grid background */}
       <div 
         className="absolute inset-0 opacity-[0.03] z-0"
@@ -261,7 +261,6 @@ export const TerminalContact = () => {
                   onKeyDown={handleCommand}
                   disabled={isAnimating || isSubmitting}
                   className="bg-transparent border-none outline-none text-white flex-1 caret-green-500"
-                  autoFocus
                 />
               </div>
             )}

@@ -42,7 +42,7 @@ export const NuiSimulator = () => {
   const { playHoverSound, playClickSound } = useUISound();
 
   return (
-    <section className="relative py-24 min-h-screen flex items-center justify-center bg-[#050505] overflow-hidden">
+    <section id="skills" className="relative py-24 min-h-screen flex items-center justify-center bg-[#050505] overflow-hidden">
       {/* Background Decor */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[100px]" />
       
